@@ -1,0 +1,55 @@
+// npx prisma generate
+// npx prisma migrate dev --name EditPresenceDay
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id           String   @id @default(uuid()) // ID único com UUID
+  name         String
+  email        String   @unique // E-mail deve ser único
+  password     String   // Senha para login
+  phoneNumber  String?
+  profilePhoto String?  // URL da foto de perfil (opcional)
+  role         String   // Cargo
+  createdAt    DateTime @default(now())
+  active       Boolean  @default(true) // Se está ativo na empresa
+  contrato     String
+  cidade       String
+  nascimento   String
+  CPF          String
+  RG           String
+  Modality     String   @default("Indefinido")
+
+  Attendance   Attendance[] // Relacionamento com os registros de ponto
+  PresenceDay  PresenceDay[] // Relacionamento com os dias presenciais
+}
+
+model Attendance {
+  id          String   @id @default(uuid()) 
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  type        String
+
+  createdAt   DateTime @default(now())
+}
+
+model PresenceDay {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  type          String   @default("Sem informação")
+  description   String   @default("Sem informação")
+  title         String   @default("Sem informação")
+
+  day       DateTime // Data específica em que o funcionário deve estar presencialmente
+}
+
+// npx prisma migrate dev --name first commit
+// npx prisma generate
