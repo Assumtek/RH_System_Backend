@@ -11,7 +11,7 @@ const attendanceRouter = Router()
 // Cria um registro de ponto
 attendanceRouter.post('/', isAuthenticated, createAttendance)
 
-// Calcula tempo trabalhado
-attendanceRouter.post('/time', isAuthenticated, countTime)
+// Calcula tempo trabalhado (usando :userId como parâmetro de rota e contract como query param)
+attendanceRouter.get('/time/:userId', isAuthenticated, countTime)
 
 export { attendanceRouter } 

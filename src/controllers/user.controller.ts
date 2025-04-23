@@ -72,11 +72,16 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
   }
 };
 
-// Editar usuário
+// Editar usuário (com userId da rota)
 export const editUser = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const userId = req.params.userId;
+    
+    if (!userId) {
+      throw new Error("ID do usuário não fornecido");
+    }
+    
     const { 
-      user_id,
       name,
       email,
       phoneNumber,
@@ -90,7 +95,7 @@ export const editUser = async (req: Request, res: Response): Promise<Response> =
     } = req.body;
 
     const updatedUser = await editUserService({
-      user_id,
+      user_id: userId,
       name,
       email,
       phoneNumber,
@@ -112,13 +117,17 @@ export const editUser = async (req: Request, res: Response): Promise<Response> =
   }
 };
 
-// Ativar/desativar usuário
+// Ativar/desativar usuário (usando userId da rota)
 export const toggleUserActive = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { user_id } = req.body;
+    const userId = req.params.userId;
+    
+    if (!userId) {
+      throw new Error("ID do usuário não fornecido");
+    }
 
     const updatedUser = await editActiveUserService({
-      user_id
+      user_id: userId
     });
 
     return res.status(200).json(updatedUser);

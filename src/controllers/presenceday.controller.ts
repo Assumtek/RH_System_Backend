@@ -19,10 +19,18 @@ export const listPresenceDays = async (req: Request, res: Response): Promise<Res
   }
 };
 
-// Criar um novo dia de presença
+// Criar um novo dia de presença (com userId como parâmetro de rota)
 export const createPresenceDay = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { userId, day, type, description, title } = req.body;
+    // Obter userId dos parâmetros da rota
+    const userId = req.params.userId;
+    
+    // Obter os demais campos do body
+    const { day, type, description, title } = req.body;
+    
+    if (!userId) {
+      throw new Error("ID do usuário não fornecido");
+    }
     
     const presenceDay = await createPresenceDayService({
       userId, 

@@ -18,10 +18,19 @@ export const createAttendance = async (req: Request, res: Response): Promise<Res
   }
 };
 
-// Calcular tempo trabalhado
+// Calcular tempo trabalhado (usando userId da rota e contract do query param)
 export const countTime = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { userId, contract } = req.body;
+    const userId = req.params.userId;
+    const contract = req.query.contract as string;
+
+    if (!userId) {
+      throw new Error("Parâmetro userId é obrigatório");
+    }
+    
+    if (!contract) {
+      throw new Error("Parâmetro contract é obrigatório");
+    }
 
     const timeCount = await countTimeService({
       userId,

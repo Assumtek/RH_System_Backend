@@ -19,10 +19,10 @@ userRouter.post('/', createUser)
 // Lista todos os usuários
 userRouter.get('/', isAuthenticated, listUsers)
 
-// Ativa/desativa um usuário
-userRouter.post('/edit', isAuthenticated, toggleUserActive)
+// Ativa/desativa um usuário (com userId como parâmetro de rota)
+userRouter.post('/edit/:userId', isAuthenticated, toggleUserActive)
 
-// Edita um usuário
-userRouter.post('/edit/all', isAuthenticated, editUser)
+// Edita um usuário (com userId como parâmetro de rota, sem o /all)
+userRouter.put('/:userId', isAuthenticated, editUser)
 
 export { userRouter } 
